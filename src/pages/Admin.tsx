@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { authService } from "@/services/authService";
 import { surveyService } from "@/services/surveyService";
 import { dashboardService } from "@/services/dashboardService";
@@ -8,8 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { 
   Users, Calendar, Star, CheckCircle, LogOut, Search,
-  LayoutDashboard, ListTodo, Menu, X, TrendingUp,
-  BrainCircuit, Download, Filter, Loader2
+  LayoutDashboard, ListTodo, TrendingUp, BrainCircuit, Loader2
 } from "lucide-react";
 import { StrategicCard } from "@/components/admin/StrategicCard";
 import { WordCloudVisual } from "@/components/admin/WordCloudVisual";
@@ -19,29 +19,47 @@ import { showSuccess, showError } from "@/utils/toast";
 import { cn } from "@/lib/utils";
 
 const Admin = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [session, setSession] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const [activeTab, setActiveTab] = useState<"dashboard" | "responses">("dashboard");
   const [responses, setResponses] = useState<SurveyResponse[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dataLoading, setDataLoading] = useState(false);
 
-  // Login form state
+  // Login form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
-    checkAuth();
+    // Verificar sessão inicial
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      handleSession(session);
+    });
+
+    // Monitorar mudanças de auth
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      handleSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated === true) loadData();
-  }, [isAuthenticated]);
-
-  const checkAuth = async () => {
-    const auth = await authService.isAuthenticated();
-    setIsAuthenticated(auth);
+  const handleSession = async (session: any) => {
+    setSession(session);
+    if (session?.user) {
+      const role = await authService.getUserRole(session.user.id);
+      setIsAdmin(role === 'admin' || session.user.email === 'admin@derela.com');
+    } else {
+      setIsAdmin(false);
+    }
+    setAuthChecking(false);
   };
+
+  useEffect(() => {
+    if (isAdmin) loadData();
+  }, [isAdmin]);
 
   const loadData = async () => {
     setDataLoading(true);
@@ -58,24 +76,30 @@ const Admin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
-    const success = await authService.login(email, password);
-    if (success) {
-      setIsAuthenticated(true);
-      showSuccess("Bem-vindo de volta!");
-    } else {
-      showError("Credenciais inválidas.");
+    try {
+      const isAuthorized = await authService.login(email, password);
+      if (!isAuthorized) {
+        showError("Acesso restrito apenas a administradores.");
+        await authService.logout();
+      } else {
+        showSuccess("Bem-vindo, Administrador!");
+      }
+    } catch (err: any) {
+      showError(err.message || "Erro ao realizar login.");
+    } finally {
+      setLoginLoading(false);
     }
-    setLoginLoading(false);
   };
 
-  const handleLogout = async () => {
-    await authService.logout();
-    setIsAuthenticated(false);
-  };
+  if (authChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="animate-spin h-10 w-10 text-rose-400" />
+      </div>
+    );
+  }
 
-  if (isAuthenticated === null) return null;
-
-  if (isAuthenticated === false) {
+  if (!session || !isAdmin) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100 max-w-md w-full space-y-8">
@@ -84,12 +108,12 @@ const Admin = () => {
                <BrainCircuit size={32} />
             </div>
             <h1 className="text-2xl font-serif text-slate-900">Admin Intelligence</h1>
-            <p className="text-slate-400 text-sm">Acesso restrito ao painel estratégico da Derela</p>
+            <p className="text-slate-400 text-sm">Acesso restrito: admin@derela.com</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="rounded-2xl h-12" />
+              <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@derela.com" required className="rounded-2xl h-12" />
             </div>
             <div className="space-y-2">
               <Label>Senha</Label>
@@ -140,7 +164,7 @@ const Admin = () => {
             ))}
           </nav>
 
-          <button onClick={handleLogout} className="mt-auto flex items-center px-4 py-4 text-slate-400 hover:text-red-500 transition-colors">
+          <button onClick={() => authService.logout()} className="mt-auto flex items-center px-4 py-4 text-slate-400 hover:text-red-500 transition-colors">
             <LogOut className="mr-3 h-5 w-5" /> Sair do Painel
           </button>
         </div>
@@ -150,7 +174,7 @@ const Admin = () => {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <h1 className="text-3xl font-serif text-slate-900">Dashboard de Inteligência</h1>
-            <p className="text-slate-400 mt-1">Dados transformados em decisões estratégicas.</p>
+            <p className="text-slate-400 mt-1">Conectado como {session?.user?.email}</p>
           </div>
           <div className="flex items-center gap-3">
             <Button onClick={loadData} variant="outline" className="rounded-2xl border-slate-100 h-12 px-6">
@@ -165,7 +189,7 @@ const Admin = () => {
           </div>
         ) : responses.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
-             <p className="text-slate-400">Nenhuma resposta encontrada no banco de dados ainda.</p>
+             <p className="text-slate-400">Aguardando as primeiras respostas das clientes.</p>
           </div>
         ) : (
           activeTab === "dashboard" && stats && acqData && retData && usageData && valData && (

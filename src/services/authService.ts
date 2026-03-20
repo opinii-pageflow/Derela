@@ -7,16 +7,32 @@ export const authService = {
       password: pass,
     });
     
-    if (error) return false;
-    return !!data.user;
+    if (error) throw error;
+    
+    // Validar se o usuário tem perfil de admin
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+
+    return profile?.role === 'admin';
   },
 
   async logout() {
     await supabase.auth.signOut();
   },
 
-  async isAuthenticated(): Promise<boolean> {
-    const { data } = await supabase.auth.getSession();
-    return !!data.session;
+  async getUserRole(userId: string): Promise<string | null> {
+    const { data } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+    return data?.role || null;
+  },
+
+  async getSession() {
+    return await supabase.auth.getSession();
   }
 };
