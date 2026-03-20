@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { SurveyFlow } from "@/components/survey/SurveyFlow";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Link } from "react-router-dom";
+import { Sparkles, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -14,6 +17,18 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFDFB] selection:bg-rose-100 relative overflow-hidden">
+      {/* Atalho Elegante para Landing Page */}
+      {!isSurveyInProgress && (
+        <Link to="/derela" className="fixed top-6 right-6 z-50 group hidden md:block">
+          <Button variant="outline" className="rounded-full bg-white/80 backdrop-blur-md border-rose-100 text-rose-500 hover:bg-rose-500 hover:text-white transition-all duration-500 pr-2 pl-6 h-12">
+            <span className="font-medium tracking-wide">Visite a Derela</span>
+            <div className="ml-4 w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center group-hover:bg-white group-hover:text-rose-500 transition-colors">
+              <ArrowRight size={14} />
+            </div>
+          </Button>
+        </Link>
+      )}
+
       {/* Imagem de Capa Condicional */}
       <div className="w-full relative">
         <img 
@@ -46,6 +61,12 @@ const Index = () => {
               <AvatarFallback className="bg-rose-50 text-rose-300 font-serif text-3xl">D</AvatarFallback>
             </Avatar>
           </div>
+
+          <Link to="/derela" className="mt-8 flex items-center gap-2 text-rose-400 font-medium hover:text-rose-600 transition-colors md:hidden">
+            <Sparkles size={16} />
+            Ver novidades da marca
+            <ArrowRight size={16} />
+          </Link>
         </header>
       )}
 
