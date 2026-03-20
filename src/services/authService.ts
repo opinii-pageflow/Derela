@@ -1,22 +1,22 @@
-const ADMIN_USER = "admin@derela.com";
-const ADMIN_PASS = "Derela@2026";
-const AUTH_KEY = "derela_admin_auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const authService = {
   async login(email: string, pass: string): Promise<boolean> {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    if (email === ADMIN_USER && pass === ADMIN_PASS) {
-      localStorage.setItem(AUTH_KEY, "true");
-      return true;
-    }
-    return false;
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: pass,
+    });
+    
+    if (error) return false;
+    return !!data.user;
   },
 
-  logout() {
-    localStorage.removeItem(AUTH_KEY);
+  async logout() {
+    await supabase.auth.signOut();
   },
 
-  isAuthenticated(): boolean {
-    return localStorage.getItem(AUTH_KEY) === "true";
+  async isAuthenticated(): Promise<boolean> {
+    const { data } = await supabase.auth.getSession();
+    return !!data.session;
   }
 };
