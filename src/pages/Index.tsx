@@ -7,7 +7,7 @@ const Index = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Imagens solicitadas
-  const landingCover = "https://ik.imagekit.io/lflb43qwh/Logo/Derela.jpg";
+  const landingCover = "https://ik.imagekit.io/lflb43qwh/Logo/Derela%20-%20mensagem%20para%20as%20mulheres.png";
   const surveyCover = "https://ik.imagekit.io/lflb43qwh/Logo/images%20(1).png";
 
   const isSurveyInProgress = currentStep > 0 && currentStep < 8;
