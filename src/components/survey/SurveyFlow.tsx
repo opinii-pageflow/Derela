@@ -111,7 +111,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
               <div className="text-center space-y-8 py-4">
                 <div className="space-y-4">
                   <h2 className="text-4xl font-serif text-slate-800 leading-tight font-medium">
-                    Queremos te ouvir.
+                    Queremos te ouvir!
                   </h2>
                   <p className="text-slate-500 font-light text-lg leading-relaxed max-w-[280px] mx-auto">
                     Sua percepção molda o futuro da Derela.
