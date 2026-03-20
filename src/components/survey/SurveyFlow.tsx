@@ -23,7 +23,11 @@ const STEPS = [
   { id: "success", title: "Finalizado" }
 ];
 
-export const SurveyFlow = () => {
+interface SurveyFlowProps {
+  onStepChange?: (step: number) => void;
+}
+
+export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [customValues, setCustomValues] = useState({ q1: "", q2: "", q3: "", q4: "" });
@@ -38,10 +42,10 @@ export const SurveyFlow = () => {
     source: "Web App"
   });
 
-  // Rolar para o topo sempre que o passo mudar
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentStep]);
+    if (onStepChange) onStepChange(currentStep);
+  }, [currentStep, onStepChange]);
 
   const progress = (currentStep / (STEPS.length - 1)) * 100;
   const next = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
