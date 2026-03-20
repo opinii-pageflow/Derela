@@ -14,12 +14,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFDFB] selection:bg-rose-100 relative overflow-hidden">
-      {/* Imagem de Capa Condicional */}
-      <div className="w-full h-48 md:h-64 overflow-hidden relative">
+      {/* Imagem de Capa Condicional - Agora sem cortes */}
+      <div className="w-full relative">
         <img 
           src={isSurveyInProgress ? surveyCover : landingCover} 
           alt="Capa Derela" 
-          className="w-full h-full object-cover"
+          className="w-full h-auto block"
         />
         <div className="absolute inset-0 bg-black/5" />
       </div>
