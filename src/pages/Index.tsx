@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { SurveyFlow } from "@/components/survey/SurveyFlow";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight } from "lucide-react";
@@ -33,7 +32,7 @@ const Index = () => {
       <div className="w-full relative">
         <img 
           src={isSurveyInProgress ? surveyCover : landingCover} 
-          alt="Capa Derela" 
+          alt="Derela Cover" 
           className="w-full h-auto block"
         />
         <div className="absolute inset-0 bg-black/5" />
@@ -54,7 +53,7 @@ const Index = () => {
             <div className="absolute inset-0 bg-rose-100/30 rounded-full blur-xl animate-pulse -z-10" />
             <Avatar className="w-32 h-32 sm:w-40 sm:h-40 border-8 border-white shadow-2xl">
               <AvatarImage 
-                src="https://ik.imagekit.io/lflb43qwh/Logo/Derela.jpg" 
+                src="/logo.png" 
                 alt="Derela Logo" 
                 className="object-cover"
               />
@@ -64,7 +63,7 @@ const Index = () => {
 
           <Link to="/derela" className="mt-8 flex items-center gap-2 text-rose-400 font-medium hover:text-rose-600 transition-colors md:hidden">
             <Sparkles size={16} />
-            Ver novidades da marca
+            Ver novidades
             <ArrowRight size={16} />
           </Link>
         </header>
@@ -77,7 +76,6 @@ const Index = () => {
       <footer className="py-12 flex flex-col items-center gap-6">
         <div className="h-px w-12 bg-slate-200" />
         <p className="text-slate-400 text-[10px] font-light tracking-[0.15em] uppercase">Estilo que expressa sua essência</p>
-        <MadeWithDyad />
       </footer>
     </div>
   );

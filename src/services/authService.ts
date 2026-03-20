@@ -7,7 +7,10 @@ export const authService = {
       password: pass,
     });
     
-    if (error) throw error;
+    if (error) {
+      console.error("Login Error:", error.message, error.status);
+      throw error;
+    }
     
     // Regra de Ouro: admin@derela.com sempre tem acesso total
     if (data.user?.email === 'admin@derela.com') return true;

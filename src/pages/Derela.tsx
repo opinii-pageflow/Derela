@@ -15,7 +15,7 @@ const Derela = () => {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.8, ease: "easeOut" }
+    transition: { duration: 0.8, ease: "easeOut" as any }
   };
 
   const galleryImages = [
@@ -61,7 +61,7 @@ const Derela = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-rose-50 px-6 h-20 flex items-center justify-between">
         <Link to="/derela" className="flex items-center gap-2">
-          <img src="https://ik.imagekit.io/lflb43qwh/Logo/Derela.jpg" alt="Logo" className="w-10 h-10 rounded-full border border-rose-100" />
+          <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full border border-rose-100" />
           <span className="font-serif text-xl tracking-wider text-rose-900">DERELA</span>
         </Link>
         <div className="hidden md:flex gap-8 text-sm font-medium tracking-wide text-slate-500 uppercase">
@@ -70,9 +70,9 @@ const Derela = () => {
           <a href="#stores" className="hover:text-rose-500 transition-colors">Lojas</a>
         </div>
         <div className="flex items-center gap-4">
-          <a href="https://www.instagram.com/israelcmadf" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-1 text-[10px] text-slate-400 hover:text-rose-500 transition-colors font-medium uppercase tracking-widest">
+          <a href="https://www.instagram.com/derelaoficial" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-1 text-[10px] text-slate-400 hover:text-rose-500 transition-colors font-medium uppercase tracking-widest">
             <Instagram size={12} />
-            @israelcmadf
+            Instagram
           </a>
           <Link to="/">
             <Button variant="outline" className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50">Pesquisa</Button>
@@ -308,14 +308,14 @@ const Derela = () => {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-16">
           <div className="space-y-6 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-4">
-              <img src="https://ik.imagekit.io/lflb43qwh/Logo/Derela.jpg" alt="Logo" className="w-14 h-14 rounded-full border border-rose-50" />
+              <img src="/logo.png" alt="Logo" className="w-14 h-14 rounded-full border border-rose-50" />
               <span className="font-serif text-3xl tracking-[0.2em] text-rose-900">DERELA</span>
             </div>
             <p className="text-slate-400 text-sm max-w-xs font-light leading-relaxed">Elegância e carinho em cada detalhe. Moda feminina feita para você brilhar em todos os seus momentos.</p>
             <div className="flex items-center justify-center md:justify-start gap-4 mt-4">
-              <a href="https://www.instagram.com/israelcmadf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-rose-400 hover:text-rose-600 transition-colors font-medium">
+              <a href="https://www.instagram.com/derelaoficial" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-rose-400 hover:text-rose-600 transition-colors font-medium">
                 <Instagram size={14} />
-                Construído por Israel Souza @israelcmadf
+                Siga nosso Instagram
               </a>
             </div>
           </div>
