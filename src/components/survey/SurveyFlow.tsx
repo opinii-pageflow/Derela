@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -37,6 +37,11 @@ export const SurveyFlow = () => {
     brand_in_3_words: "",
     source: "Web App"
   });
+
+  // Rolar para o topo sempre que o passo mudar
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentStep]);
 
   const progress = (currentStep / (STEPS.length - 1)) * 100;
   const next = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
