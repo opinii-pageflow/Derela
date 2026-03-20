@@ -33,12 +33,10 @@ const Admin = () => {
   const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
-    // Verificar sessão inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
       handleSession(session);
     });
 
-    // Monitorar mudanças de auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       handleSession(session);
     });
@@ -49,8 +47,13 @@ const Admin = () => {
   const handleSession = async (session: any) => {
     setSession(session);
     if (session?.user) {
-      const role = await authService.getUserRole(session.user.id);
-      setIsAdmin(role === 'admin' || session.user.email === 'admin@derela.com');
+      // Prioridade absoluta para o e-mail de admin
+      if (session.user.email === 'admin@derela.com') {
+        setIsAdmin(true);
+      } else {
+        const role = await authService.getUserRole(session.user.id);
+        setIsAdmin(role === 'admin');
+      }
     } else {
       setIsAdmin(false);
     }
@@ -82,10 +85,10 @@ const Admin = () => {
         showError("Acesso restrito apenas a administradores.");
         await authService.logout();
       } else {
-        showSuccess("Bem-vindo, Administrador!");
+        showSuccess("Bem-vindo!");
       }
     } catch (err: any) {
-      showError(err.message || "Erro ao realizar login.");
+      showError(err.message || "E-mail ou senha incorretos.");
     } finally {
       setLoginLoading(false);
     }

@@ -9,7 +9,10 @@ export const authService = {
     
     if (error) throw error;
     
-    // Validar se o usuário tem perfil de admin
+    // Regra de Ouro: admin@derela.com sempre tem acesso total
+    if (data.user?.email === 'admin@derela.com') return true;
+
+    // Para outros usuários, validar perfil
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')

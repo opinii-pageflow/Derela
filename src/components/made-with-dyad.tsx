@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import { Instagram } from "lucide-react";
 
 export const MadeWithDyad = () => {
@@ -7,18 +10,10 @@ export const MadeWithDyad = () => {
         href="https://www.instagram.com/israelcmadf"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 text-sm text-rose-400 hover:text-rose-600 transition-colors font-medium"
+        className="flex items-center gap-2 text-[11px] text-slate-300 hover:text-rose-300 transition-colors font-light uppercase tracking-[0.2em]"
       >
-        <Instagram size={16} />
-        Construído por Israel Souza @israelcmadf
-      </a>
-      <a
-        href="https://www.dyad.sh/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-[10px] text-gray-400 hover:text-gray-600 uppercase tracking-widest"
-      >
-        Made with Dyad
+        <Instagram size={12} strokeWidth={1.5} />
+        Construído por Israel Souza
       </a>
     </div>
   );
