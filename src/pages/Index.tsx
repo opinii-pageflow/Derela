@@ -14,7 +14,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFDFB] selection:bg-rose-100 relative overflow-hidden">
-      {/* Imagem de Capa Condicional - Agora sem cortes */}
+      {/* Imagem de Capa Condicional */}
       <div className="w-full relative">
         <img 
           src={isSurveyInProgress ? surveyCover : landingCover} 
@@ -32,10 +32,10 @@ const Index = () => {
         </>
       )}
 
-      {/* Header Premium - Aparece apenas na tela inicial ou final */}
+      {/* Header Premium - Mantendo apenas o Logo (Avatar) */}
       {!isSurveyInProgress && (
         <header className="flex flex-col items-center relative z-20 -mt-16 sm:-mt-20 px-4 text-center">
-          <div className="mb-4 relative">
+          <div className="relative">
             <div className="absolute inset-0 bg-rose-100/30 rounded-full blur-xl animate-pulse -z-10" />
             <Avatar className="w-32 h-32 sm:w-40 sm:h-40 border-8 border-white shadow-2xl">
               <AvatarImage 
@@ -45,13 +45,6 @@ const Index = () => {
               />
               <AvatarFallback className="bg-rose-50 text-rose-300 font-serif text-3xl">D</AvatarFallback>
             </Avatar>
-          </div>
-          
-          <div className="space-y-0.5 bg-white/60 backdrop-blur-md px-6 py-2 rounded-full border border-white/40 shadow-sm">
-            <div className="inline-block text-slate-900 text-[9px] font-bold tracking-[0.2em] uppercase">
-              Experience Research
-            </div>
-            <h1 className="text-3xl font-serif text-slate-900 tracking-tighter uppercase font-extrabold leading-none">derela</h1>
           </div>
         </header>
       )}
