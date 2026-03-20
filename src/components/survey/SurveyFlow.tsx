@@ -105,12 +105,12 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-            className="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-rose-900/5 border border-white/50 backdrop-blur-sm"
+            className={`bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-rose-900/5 border border-white/50 backdrop-blur-sm ${currentStep === 0 ? '-mt-12 sm:-mt-16' : ''}`}
           >
             {currentStep === 0 && (
               <div className="text-center space-y-8 py-4">
                 <div className="space-y-4">
-                  <h2 className="text-4xl font-serif text-slate-800 leading-tight font-light italic">
+                  <h2 className="text-4xl font-serif text-slate-800 leading-tight font-medium">
                     Queremos te ouvir.
                   </h2>
                   <p className="text-slate-500 font-light text-lg leading-relaxed max-w-[280px] mx-auto">
@@ -128,7 +128,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
 
             {currentStep >= 1 && currentStep <= 4 && (
               <div className="space-y-8">
-                <h2 className="text-2xl font-serif text-slate-800 leading-snug font-medium italic">
+                <h2 className="text-2xl font-serif text-slate-800 leading-snug font-medium">
                   {currentStep === 1 && "O que te trouxe à Derela pela primeira vez?"}
                   {currentStep === 2 && "Por que você escolhe voltar?"}
                   {currentStep === 3 && "Em quais ocasiões você usa Derela?"}
@@ -192,7 +192,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
 
             {currentStep === 5 && (
               <div className="space-y-8">
-                <h2 className="text-2xl font-serif text-slate-800 text-center italic">Como você avalia sua experiência conosco?</h2>
+                <h2 className="text-2xl font-serif text-slate-800 text-center">Como você avalia sua experiência conosco?</h2>
                 <div className="flex flex-col gap-3">
                   {["Excelente", "Muito boa", "Boa", "Regular", "Ruim"].map((opt, i) => (
                     <Button
@@ -214,7 +214,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
 
             {currentStep === 6 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-serif text-slate-800 italic">O que você sente ao vestir Derela?</h2>
+                <h2 className="text-2xl font-serif text-slate-800">O que você sente ao vestir Derela?</h2>
                 <Textarea 
                   placeholder="Sua resposta..." 
                   className="min-h-[180px] rounded-3xl p-6 border-slate-100 bg-slate-50/30 focus:bg-white focus:ring-rose-200 transition-all text-lg"
@@ -226,7 +226,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
 
             {currentStep === 7 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-serif text-slate-800 italic">Defina a Derela em 3 palavras marcantes.</h2>
+                <h2 className="text-2xl font-serif text-slate-800">Defina a Derela em 3 palavras marcantes.</h2>
                 <Textarea 
                   placeholder="Ex: Confiança, Elegância, Modernidade" 
                   className="min-h-[120px] rounded-3xl p-6 border-slate-100 bg-slate-50/30 focus:bg-white focus:ring-rose-200 transition-all text-lg"
@@ -246,7 +246,7 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
                   <CheckCircle2 size={56} />
                 </motion.div>
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-serif text-slate-900 leading-tight italic">Obrigada por brilhar conosco.</h2>
+                  <h2 className="text-3xl font-serif text-slate-900 leading-tight">Obrigada por brilhar conosco.</h2>
                   <p className="text-slate-500 font-light text-lg">Suas palavras são o nosso maior guia.</p>
                 </div>
                 <Button 
