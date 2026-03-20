@@ -2,7 +2,6 @@ import React from "react";
 import { SurveyFlow } from "@/components/survey/SurveyFlow";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import coverImage from "@/assets/cover.png";
 
 const Index = () => {
   return (
@@ -10,7 +9,7 @@ const Index = () => {
       {/* Imagem de Capa */}
       <div className="w-full h-48 md:h-64 overflow-hidden relative">
         <img 
-          src={coverImage} 
+          src="https://ik.imagekit.io/lflb43qwh/Logo/images%20(1).png" 
           alt="Capa Derela" 
           className="w-full h-full object-cover"
         />
