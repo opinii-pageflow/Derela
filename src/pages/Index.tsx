@@ -32,9 +32,9 @@ const Index = () => {
         </>
       )}
 
-      {/* Header Premium - Mantendo apenas o Logo (Avatar) */}
+      {/* Header Premium - Logo ajustado para baixo */}
       {!isSurveyInProgress && (
-        <header className="flex flex-col items-center relative z-20 -mt-16 sm:-mt-20 px-4 text-center">
+        <header className="flex flex-col items-center relative z-20 -mt-6 sm:-mt-8 px-4 text-center">
           <div className="relative">
             <div className="absolute inset-0 bg-rose-100/30 rounded-full blur-xl animate-pulse -z-10" />
             <Avatar className="w-32 h-32 sm:w-40 sm:h-40 border-8 border-white shadow-2xl">
