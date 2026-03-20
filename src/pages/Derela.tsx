@@ -69,9 +69,15 @@ const Derela = () => {
           <a href="#gallery" className="hover:text-rose-500 transition-colors">Galeria</a>
           <a href="#stores" className="hover:text-rose-500 transition-colors">Lojas</a>
         </div>
-        <Link to="/">
-          <Button variant="outline" className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50">Pesquisa</Button>
-        </Link>
+        <div className="flex items-center gap-4">
+          <a href="https://www.instagram.com/israelcmadf" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center gap-1 text-[10px] text-slate-400 hover:text-rose-500 transition-colors font-medium uppercase tracking-widest">
+            <Instagram size={12} />
+            @israelcmadf
+          </a>
+          <Link to="/">
+            <Button variant="outline" className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50">Pesquisa</Button>
+          </Link>
+        </div>
       </nav>
 
       {/* Hero Section - Headlines */}
@@ -306,6 +312,12 @@ const Derela = () => {
               <span className="font-serif text-3xl tracking-[0.2em] text-rose-900">DERELA</span>
             </div>
             <p className="text-slate-400 text-sm max-w-xs font-light leading-relaxed">Elegância e carinho em cada detalhe. Moda feminina feita para você brilhar em todos os seus momentos.</p>
+            <div className="flex items-center justify-center md:justify-start gap-4 mt-4">
+              <a href="https://www.instagram.com/israelcmadf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-rose-400 hover:text-rose-600 transition-colors font-medium">
+                <Instagram size={14} />
+                Construído por Israel Souza @israelcmadf
+              </a>
+            </div>
           </div>
           
           <div className="flex flex-wrap justify-center gap-16">
