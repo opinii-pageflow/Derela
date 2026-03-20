@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, ChevronRight, ChevronLeft, Send, Check } from "lucide-react";
+import { CheckCircle2, ChevronRight, ChevronLeft, Send, Check, ArrowRight } from "lucide-react";
 import { surveyService } from "@/services/surveyService";
 import { showSuccess, showError } from "@/utils/toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const STEPS = [
   { id: "welcome", title: "Início" },
@@ -274,13 +275,21 @@ export const SurveyFlow = ({ onStepChange }: SurveyFlowProps) => {
                   <h2 className="text-3xl font-serif text-slate-900 leading-tight font-medium">Obrigada por brilhar conosco.</h2>
                   <p className="text-slate-400 font-light text-lg">Sua opinião é fundamental para nossa evolução.</p>
                 </div>
-                <Button 
-                  onClick={() => window.location.reload()}
-                  variant="outline"
-                  className="rounded-full px-12 h-14 border-slate-200 text-slate-500 hover:bg-slate-50 transition-all text-lg font-light"
-                >
-                  Página Inicial
-                </Button>
+                
+                <div className="flex flex-col gap-4 max-w-xs mx-auto pt-4">
+                  <Link to="/derela">
+                    <Button className="w-full bg-rose-400 hover:bg-rose-500 text-white rounded-full h-14 text-lg shadow-xl shadow-rose-100 border-none transition-transform hover:scale-105">
+                      Ver Novidades <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <Button 
+                    onClick={() => window.location.reload()}
+                    variant="ghost"
+                    className="rounded-full px-12 h-12 text-slate-400 hover:text-slate-600 transition-all text-sm font-light"
+                  >
+                    Página Inicial
+                  </Button>
+                </div>
               </div>
             )}
           </motion.div>
