@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { 
   Users, Calendar, Star, CheckCircle, LogOut, Search,
-  LayoutDashboard, ListTodo, TrendingUp, BrainCircuit, Loader2, Download, MessageCircle
+  LayoutDashboard, ListTodo, TrendingUp, BrainCircuit, Loader2
 } from "lucide-react";
 import { StrategicCard } from "@/components/admin/StrategicCard";
 import { WordCloudVisual } from "@/components/admin/WordCloudVisual";
@@ -17,15 +17,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { showSuccess, showError } from "@/utils/toast";
 import { cn } from "@/lib/utils";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 const Admin = () => {
   const [session, setSession] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [authChecking, setAuthChecking] = useState(true);
-  const [activeTab, setActiveTab] = useState<"dashboard" | "responses" | "open_ended">("dashboard");
-  const [exporting, setExporting] = useState(false);
+  const [activeTab, setActiveTab] = useState<"dashboard" | "responses">("dashboard");
   const [responses, setResponses] = useState<SurveyResponse[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dataLoading, setDataLoading] = useState(false);
@@ -50,7 +47,6 @@ const Admin = () => {
   const handleSession = async (session: any) => {
     setSession(session);
     if (session?.user) {
-      // Prioridade absoluta para o e-mail de admin
       if (session.user.email === 'admin@derela.com') {
         setIsAdmin(true);
       } else {
@@ -76,40 +72,6 @@ const Admin = () => {
       showError("Erro ao carregar dados.");
     } finally {
       setDataLoading(false);
-    }
-  };
-
-  const exportPDF = async () => {
-    const input = document.getElementById("pdf-content");
-    if (!input) return;
-    
-    setExporting(true);
-    try {
-      // Small delay ensures everything is settled
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      const canvas = await html2canvas(input, {
-        scale: 2, 
-        useCORS: true,
-        logging: false,
-        backgroundColor: "#FDFDFF"
-      });
-      
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      // se a altura do conteudo for maior que uma página, ele ficará contínuo na escala q a4 permite
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("Derela_Relatorio_Admin.pdf");
-      showSuccess("PDF exportado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao gerar PDF:", error);
-      showError("Erro ao gerar o relatório PDF.");
-    } finally {
-      setExporting(false);
     }
   };
 
@@ -144,8 +106,8 @@ const Admin = () => {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100 max-w-md w-full space-y-8">
           <div className="text-center space-y-2">
-            <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mx-auto mb-4">
-               <BrainCircuit size={32} />
+            <div className="w-20 h-20 rounded-3xl overflow-hidden mx-auto mb-4 border border-slate-100 shadow-md">
+               <img src="/logo-brand.jpg" alt="Derela Brand" className="w-full h-full object-cover" />
             </div>
             <h1 className="text-2xl font-serif text-slate-900">Admin Intelligence</h1>
             <p className="text-slate-400 text-sm">Acesso restrito: admin@derela.com</p>
@@ -179,11 +141,11 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] flex">
-      <aside className="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-100 hidden lg:block print:hidden">
+      <aside className="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-100 hidden lg:block">
         <div className="h-full flex flex-col p-8">
           <div className="mb-12 px-2 flex items-center gap-3">
-            <div className="w-10 h-10 bg-rose-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-rose-200">
-               <TrendingUp size={20} />
+            <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg border border-slate-50">
+               <img src="/logo-brand.jpg" alt="Brand Logo" className="w-full h-full object-cover" />
             </div>
             <h2 className="text-xl font-serif text-slate-900 tracking-tight">Strategic Admin</h2>
           </div>
@@ -191,7 +153,6 @@ const Admin = () => {
           <nav className="flex-grow space-y-3">
             {[
               { id: "dashboard", label: "Insights Estratégicos", icon: LayoutDashboard },
-              { id: "open_ended", label: "Campos Abertos", icon: MessageCircle },
               { id: "responses", label: "Dados Brutos", icon: ListTodo },
             ].map(item => (
               <button
@@ -211,17 +172,13 @@ const Admin = () => {
         </div>
       </aside>
 
-      <main className="flex-grow lg:ml-72 print:ml-0 p-6 lg:p-12 print:p-0" id="pdf-content">
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 print:mb-6">
+      <main className="flex-grow lg:ml-72 p-6 lg:p-12">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <h1 className="text-3xl font-serif text-slate-900">Dashboard de Inteligência</h1>
             <p className="text-slate-400 mt-1">Conectado como {session?.user?.email}</p>
           </div>
-          <div className="flex items-center gap-3 print:hidden" data-html2canvas-ignore="true">
-            <Button onClick={exportPDF} disabled={exporting || dataLoading} variant="outline" className="rounded-2xl border-slate-100 h-12 px-6">
-               {exporting ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Download className="mr-2 h-4 w-4" />} 
-               {exporting ? "Gerando..." : "Exportar PDF"}
-            </Button>
+          <div className="flex items-center gap-3">
             <Button onClick={loadData} variant="outline" className="rounded-2xl border-slate-100 h-12 px-6">
                {dataLoading ? <Loader2 className="animate-spin h-4 w-4" /> : <TrendingUp className="mr-2 h-4 w-4" />} Atualizar
             </Button>
@@ -286,7 +243,7 @@ const Admin = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:break-inside-avoid">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                     <h3 className="text-slate-800 font-semibold mb-2">Sentimento das Clientes</h3>
                     <p className="text-slate-400 text-sm mb-6">Palavras mais associadas à sensação de vestir Derela.</p>
@@ -298,41 +255,8 @@ const Admin = () => {
                     <WordCloudVisual words={brandWords} />
                 </div>
               </div>
-
             </div>
           )
-        )}
-
-        {activeTab === "open_ended" && responses.length > 0 && (
-          <div className="space-y-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h3 className="text-xl font-serif text-slate-800 ml-2">Respostas: Sentimento</h3>
-                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[500px]">
-                  <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                    {responses.filter(r => r.feeling_when_using).map(r => (
-                      <div key={r.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-600 italic">
-                        "{r.feeling_when_using}"
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-serif text-slate-800 ml-2">Respostas: Marca em 3 Palavras</h3>
-                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[500px]">
-                  <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                    {responses.filter(r => r.brand_in_3_words).map(r => (
-                      <div key={r.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-600 font-medium">
-                        {r.brand_in_3_words}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         )}
 
         {activeTab === "responses" && responses.length > 0 && (

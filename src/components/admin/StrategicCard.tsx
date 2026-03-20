@@ -99,8 +99,7 @@ export const StrategicCard = ({ title, insight, data, type = "bar", color = "#F4
           </div>
         </div>
         
-        {/* Print safe selector */}
-        <div className="absolute top-6 right-6 flex gap-1 bg-slate-50 p-1 rounded-xl border border-slate-100 opacity-60 hover:opacity-100 transition-opacity print:hidden">
+        <div className="absolute top-6 right-6 flex gap-1 bg-slate-50 p-1 rounded-xl border border-slate-100 opacity-60 hover:opacity-100 transition-opacity">
           <button 
             onClick={() => setCurrentType("bar")}
             className={`p-1.5 rounded-lg transition-colors ${currentType === 'bar' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
@@ -122,7 +121,6 @@ export const StrategicCard = ({ title, insight, data, type = "bar", color = "#F4
           <button 
             onClick={() => setCurrentType("vbar")}
             className={`p-1.5 rounded-lg transition-colors ${currentType === 'vbar' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
-            title="Barras Verticais"
           >
             <BarChart3 size={16} />
           </button>
