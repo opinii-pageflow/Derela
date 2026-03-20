@@ -21,29 +21,29 @@ const Index = () => {
       <div className="absolute top-[20%] left-[-10%] w-[40%] h-[40%] bg-rose-50/50 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-orange-50/50 rounded-full blur-3xl -z-10" />
 
-      {/* Header Premium */}
-      <header className="pt-8 pb-2 text-center flex flex-col items-center relative z-10">
+      {/* Header Premium - Ajustado para sobrepor a capa */}
+      <header className="flex flex-col items-center relative z-20 -mt-16 sm:-mt-20 px-4 text-center">
         <div className="mb-4 relative">
-          <div className="absolute inset-0 bg-rose-100 rounded-full blur-md animate-pulse -z-10 opacity-50" />
-          <Avatar className="w-20 h-20 border-4 border-white shadow-xl">
+          <div className="absolute inset-0 bg-rose-100/30 rounded-full blur-xl animate-pulse -z-10" />
+          <Avatar className="w-32 h-32 sm:w-40 sm:h-40 border-8 border-white shadow-2xl">
             <AvatarImage 
               src="https://ik.imagekit.io/lflb43qwh/Logo/Derela.jpg" 
               alt="Derela Logo" 
               className="object-cover"
             />
-            <AvatarFallback className="bg-rose-50 text-rose-300 font-serif text-2xl">D</AvatarFallback>
+            <AvatarFallback className="bg-rose-50 text-rose-300 font-serif text-3xl">D</AvatarFallback>
           </Avatar>
         </div>
         
-        <div className="space-y-0.5">
-          <div className="inline-block px-3 py-0.5 rounded-full bg-slate-900 text-white text-[9px] font-bold tracking-[0.2em] uppercase mb-1">
+        <div className="space-y-0.5 bg-white/60 backdrop-blur-md px-6 py-2 rounded-full border border-white/40 shadow-sm">
+          <div className="inline-block text-slate-900 text-[9px] font-bold tracking-[0.2em] uppercase">
             Experience Research
           </div>
-          <h1 className="text-3xl font-serif text-slate-900 tracking-tighter uppercase font-bold">derela</h1>
+          <h1 className="text-3xl font-serif text-slate-900 tracking-tighter uppercase font-extrabold leading-none">derela</h1>
         </div>
       </header>
 
-      <main className="relative z-10 -mt-2">
+      <main className="relative z-10 mt-6">
         <SurveyFlow />
       </main>
 

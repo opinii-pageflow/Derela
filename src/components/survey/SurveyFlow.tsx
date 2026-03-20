@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle2, ChevronRight, ChevronLeft, Send, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronRight, ChevronLeft, Send } from "lucide-react";
 import { surveyService } from "@/services/surveyService";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -77,7 +77,7 @@ export const SurveyFlow = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-6 py-4 min-h-[500px] flex flex-col relative">
+    <div className="max-w-xl mx-auto px-6 py-4 min-h-[400px] flex flex-col relative">
       {currentStep > 0 && currentStep < STEPS.length - 1 && (
         <div className="mb-12 space-y-4">
           <div className="flex justify-between items-end mb-2">
@@ -99,10 +99,7 @@ export const SurveyFlow = () => {
             className="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-rose-900/5 border border-white/50 backdrop-blur-sm"
           >
             {currentStep === 0 && (
-              <div className="text-center space-y-8 py-6">
-                <div className="inline-flex p-3 bg-rose-50 rounded-2xl text-rose-500 mb-2">
-                  <Sparkles size={24} />
-                </div>
+              <div className="text-center space-y-6 py-2">
                 <div className="space-y-4">
                   <h2 className="text-4xl font-serif text-slate-900 leading-tight">Queremos te ouvir.</h2>
                   <p className="text-slate-500 font-light text-lg leading-relaxed max-w-[280px] mx-auto">
