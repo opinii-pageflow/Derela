@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2, ChevronRight, ChevronLeft, Send } from "lucide-react";
 import { surveyService } from "@/services/surveyService";
@@ -25,6 +26,13 @@ const STEPS = [
 export const SurveyFlow = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [customValues, setCustomValues] = useState({
+    q1: "",
+    q2: "",
+    q3: "",
+    q4: ""
+  });
+  
   const [formData, setFormData] = useState({
     first_purchase_reason: "",
     return_reason: "",
@@ -43,8 +51,21 @@ export const SurveyFlow = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
+    
+    // Processar valores customizados antes de enviar
+    const finalData = { ...formData };
+    if (formData.first_purchase_reason === "Outro") finalData.first_purchase_reason = `Outro: ${customValues.q1}`;
+    if (formData.return_reason === "Outro") finalData.return_reason = `Outro: ${customValues.q2}`;
+    if (formData.clothing_value_priority === "Outro") finalData.clothing_value_priority = `Outro: ${customValues.q4}`;
+    
+    if (formData.daily_usage_moments.includes("Outro")) {
+      finalData.daily_usage_moments = formData.daily_usage_moments.map(m => 
+        m === "Outro" ? `Outro: ${customValues.q3}` : m
+      );
+    }
+
     try {
-      await surveyService.saveResponse(formData);
+      await surveyService.saveResponse(finalData);
       showSuccess("Sua resposta foi enviada com sucesso!");
       next();
     } catch (error) {
@@ -56,10 +77,22 @@ export const SurveyFlow = () => {
 
   const isStepValid = () => {
     switch(currentStep) {
-      case 1: return !!formData.first_purchase_reason;
-      case 2: return !!formData.return_reason;
-      case 3: return formData.daily_usage_moments.length > 0;
-      case 4: return !!formData.clothing_value_priority;
+      case 1: 
+        if (!formData.first_purchase_reason) return false;
+        if (formData.first_purchase_reason === "Outro" && !customValues.q1) return false;
+        return true;
+      case 2: 
+        if (!formData.return_reason) return false;
+        if (formData.return_reason === "Outro" && !customValues.q2) return false;
+        return true;
+      case 3: 
+        if (formData.daily_usage_moments.length === 0) return false;
+        if (formData.daily_usage_moments.includes("Outro") && !customValues.q3) return false;
+        return true;
+      case 4: 
+        if (!formData.clothing_value_priority) return false;
+        if (formData.clothing_value_priority === "Outro" && !customValues.q4) return false;
+        return true;
       case 5: return !!formData.overall_experience;
       case 6: return formData.feeling_when_using.length > 3;
       case 7: return formData.brand_in_3_words.length > 3;
@@ -116,6 +149,16 @@ export const SurveyFlow = () => {
                     </Label>
                   ))}
                 </RadioGroup>
+                {formData.first_purchase_reason === "Outro" && (
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
+                    <Input 
+                      placeholder="Por favor, especifique..." 
+                      className="rounded-xl border-rose-200 focus:border-rose-400 focus:ring-rose-400"
+                      value={customValues.q1}
+                      onChange={(e) => setCustomValues({...customValues, q1: e.target.value})}
+                    />
+                  </motion.div>
+                )}
               </div>
             )}
 
@@ -130,6 +173,16 @@ export const SurveyFlow = () => {
                     </Label>
                   ))}
                 </RadioGroup>
+                {formData.return_reason === "Outro" && (
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
+                    <Input 
+                      placeholder="Por favor, especifique..." 
+                      className="rounded-xl border-rose-200 focus:border-rose-400 focus:ring-rose-400"
+                      value={customValues.q2}
+                      onChange={(e) => setCustomValues({...customValues, q2: e.target.value})}
+                    />
+                  </motion.div>
+                )}
               </div>
             )}
 
@@ -137,7 +190,7 @@ export const SurveyFlow = () => {
               <div className="space-y-6">
                 <h2 className="text-2xl font-serif text-slate-800">Em quais momentos você mais usa Derela?</h2>
                 <div className="grid gap-3">
-                  {["Trabalho", "Lazer / dia a dia", "Eventos sociais", "Academia", "Em casa", "Viagens", "Encontros"].map(opt => (
+                  {["Trabalho", "Lazer / dia a dia", "Eventos sociais", "Academia", "Em casa", "Viagens", "Encontros", "Outro"].map(opt => (
                     <Label key={opt} className={`flex items-center p-4 border rounded-2xl cursor-pointer transition-all ${formData.daily_usage_moments.includes(opt) ? 'border-rose-300 bg-rose-50' : 'hover:border-slate-300'}`}>
                       <Checkbox 
                         checked={formData.daily_usage_moments.includes(opt)}
@@ -152,6 +205,16 @@ export const SurveyFlow = () => {
                     </Label>
                   ))}
                 </div>
+                {formData.daily_usage_moments.includes("Outro") && (
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
+                    <Input 
+                      placeholder="Em quais outros momentos?" 
+                      className="rounded-xl border-rose-200 focus:border-rose-400 focus:ring-rose-400"
+                      value={customValues.q3}
+                      onChange={(e) => setCustomValues({...customValues, q3: e.target.value})}
+                    />
+                  </motion.div>
+                )}
               </div>
             )}
 
@@ -159,13 +222,23 @@ export const SurveyFlow = () => {
               <div className="space-y-6">
                 <h2 className="text-2xl font-serif text-slate-800">O que você mais valoriza em uma roupa?</h2>
                 <RadioGroup value={formData.clothing_value_priority} onValueChange={(v) => setFormData({...formData, clothing_value_priority: v})} className="grid gap-3">
-                  {["Conforto", "Preço", "Estilo", "Qualidade / durabilidade", "Exclusividade", "Tendência", "Versatilidade"].map(opt => (
+                  {["Conforto", "Preço", "Estilo", "Qualidade / durabilidade", "Exclusividade", "Tendência", "Versatilidade", "Outro"].map(opt => (
                     <Label key={opt} className={`flex items-center p-4 border rounded-2xl cursor-pointer transition-all ${formData.clothing_value_priority === opt ? 'border-rose-300 bg-rose-50' : 'hover:border-slate-300'}`}>
                       <RadioGroupItem value={opt} className="mr-3" />
                       <span className="text-slate-700">{opt}</span>
                     </Label>
                   ))}
                 </RadioGroup>
+                {formData.clothing_value_priority === "Outro" && (
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-2">
+                    <Input 
+                      placeholder="O que mais você valoriza?" 
+                      className="rounded-xl border-rose-200 focus:border-rose-400 focus:ring-rose-400"
+                      value={customValues.q4}
+                      onChange={(e) => setCustomValues({...customValues, q4: e.target.value})}
+                    />
+                  </motion.div>
+                )}
               </div>
             )}
 
